@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+
+use App\Models\Slot;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,11 +16,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        Slot::create([
+            'id' => 1,
+            'name' => 'SLOT 1'
+        ]);
+        Slot::create([
+            'id' => 2,
+            'name' => 'SLOT 2'
+        ]);
+        Slot::create([
+            'id' => 3,
+            'name' => 'SLOT 3'
+        ]);
     }
 }
