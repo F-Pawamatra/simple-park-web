@@ -20,6 +20,10 @@
                         <a class="nav-link"
                             href="{{ url('user-entries') }}">User Entries</a>
                     </li>
+                    <li class="{{ Request::is('light-monitoring') ? 'active' : '' }}">
+                        <a class="nav-link"
+                            href="{{ url('light-monitoring') }}">Light Monitoring</a>
+                    </li>
                 </ul>
             </li>
         </ul>

@@ -40,7 +40,6 @@
                                                     Id
                                                 </th>
                                                 <th>Slot</th>
-                                                <th>UID</th>
                                                 <th>Check in</th>
                                                 <th>Check out</th>
                                             </tr>
@@ -55,13 +54,10 @@
                                                         {{$userEntry->id_slot}}
                                                     </td>
                                                     <td>
-                                                        {{$userEntry->rfid_uid}}
-                                                    </td>
-                                                    <td>
                                                         {{$userEntry->check_in_at}}
                                                     </td>
                                                     <td>
-                                                        {{$userEntry->check_in_out}}
+                                                        {{$userEntry->check_out_at}}
                                                     </td>
                                                 </tr>
                                             @endforeach

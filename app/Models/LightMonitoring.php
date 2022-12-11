@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Slot extends Model
+class LightMonitoring extends Model
 {
     use HasFactory;
 
-    protected $table = 'slots';
+    protected $table = 'light_monitoring';
     public $timestamps = false;
-    protected $fillable = ['name', 'is_occupied'];
+    protected $fillable = ['label', 'status'];
 }

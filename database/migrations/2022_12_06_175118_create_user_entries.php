@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('user_entries', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('rfid_uid');
             $table->unsignedBigInteger('id_slot');
             $table->dateTime('check_in_at');
             $table->dateTime('check_out_at')->nullable();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\LightMonitoring;
 use App\Models\Slot;
 use App\Models\UserEntry;
 use Carbon\Carbon;
@@ -10,15 +11,14 @@ use Illuminate\Http\Response;
 
 class ProvideDataController extends Controller
 {
-    public function getAvailableSlots() {
-        $availableSlots = Slot::where('is_occupied', false)
+    public function getSlot() {
+        $selectedSlot = Slot::where('is_occupied', false)
             ->get(['id'])
-            ->toArray();
-        $availableSlots = array_column($availableSlots, 'id');
+            ->first();
 
         return response()->json([
-            'available_slots' => $availableSlots
-        ]);
+            'selected_slot' => $selectedSlot->id,
+        ], 200);
     }
 
     public function userCheckIn(Request $request) {
@@ -28,7 +28,6 @@ class ProvideDataController extends Controller
             $timeNow = Carbon::now();
             try {
                 UserEntry::create([
-                    'rfid_uid' => $data['rfid_uid'],
                     'id_slot' => $data['slot'],
                     'check_in_at' => $timeNow
                 ]);
@@ -50,8 +49,7 @@ class ProvideDataController extends Controller
         if ($this->userEntryValidate($data)) {
             $timeNow = Carbon::now();
             try {
-                $lastRecord = UserEntry::where('rfid_uid', $data['rfid_uid'])
-                    ->where('id_slot', $data['slot'])
+                $lastRecord = UserEntry::where('id_slot', $data['slot'])
                     ->orderBy('check_in_at', 'DESC')
                     ->first();
                 $lastRecord->check_out_at = $timeNow;
@@ -62,15 +60,37 @@ class ProvideDataController extends Controller
 
             Slot::where('id', $data['slot'])
                 ->update(['is_occupied' => false]);
-            return response()->json(['error' => false], 201); 
+            return response()->json(['error' => false], 200); 
         } else {
             return response()->json(['error' => true], 400); 
         }
     }
 
     public function userEntryValidate($data) {
-        if (isset($data['slot']) && isset($data['rfid_uid'])) {
+        if (isset($data['slot'])) {
             return true;
         }  
+    }
+
+    public function turnOnLight(Request $request) {
+        try {
+            LightMonitoring::where('id', 1)
+                ->update(['status' => true]);
+        } catch (Throwable $e) {
+            return response()->json(['error' => true], 500);
+        }
+
+        return response()->json(['error' => false], 200);
+    }
+
+    public function turnOffLight(Request $request) {
+        try {
+            LightMonitoring::where('id', 1)
+                ->update(['status' => false]);
+        } catch (Throwable $e) {
+            return response()->json(['error' => true], 500);
+        }
+
+        return response()->json(['error' => false], 200);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LightMonitoringController;
 use App\Http\Controllers\SlotController;
 use App\Http\Controllers\UserEntryController;
 use Illuminate\Support\Facades\Route;
@@ -21,3 +22,4 @@ Route::get('/', function () {
 
 Route::resource('slots', SlotController::class);
 Route::resource('user-entries', UserEntryController::class);
+Route::resource('light-monitoring', LightMonitoringController::class);

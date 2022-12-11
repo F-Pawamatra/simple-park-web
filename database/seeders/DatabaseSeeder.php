@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\LightMonitoring;
 use Illuminate\Database\Seeder;
 
 use App\Models\Slot;
@@ -27,6 +28,10 @@ class DatabaseSeeder extends Seeder
         Slot::create([
             'id' => 3,
             'name' => 'SLOT 3'
+        ]);
+
+        LightMonitoring::create([
+            'label' => 'LIGHT 1'
         ]);
     }
 }
