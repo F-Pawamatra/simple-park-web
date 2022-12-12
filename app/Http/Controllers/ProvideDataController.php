@@ -22,56 +22,38 @@ class ProvideDataController extends Controller
     }
 
     public function userCheckIn(Request $request) {
-        $data = json_decode($request->getContent(), true);
-
-        if ($this->userEntryValidate($data)) {
-            $timeNow = Carbon::now();
-            try {
-                UserEntry::create([
-                    'id_slot' => $data['slot'],
-                    'check_in_at' => $timeNow
-                ]);
-            } catch (Throwable $e) {
-                return response()->json(['error' => true], 500);
-            }
-
-            Slot::where('id', $data['slot'])
-                ->update(['is_occupied' => true]);
-            return response()->json(['error' => false], 201); 
-        } else {
-            return response()->json(['error' => true], 400); 
+        $timeNow = Carbon::now();
+        try {
+            UserEntry::create([
+                'id_slot' => $request->id_slot,
+                'check_in_at' => $timeNow
+            ]);
+        } catch (Throwable $e) {
+            return response()->json(['error' => true], 500);
         }
+
+        Slot::where('id', $request->id_slot)
+            ->update(['is_occupied' => true]);
+        return response()->json(['error' => false], 201); 
     }
 
     public function userCheckOut(Request $request) {
-        $data = json_decode($request->getContent(), true);
-
-        if ($this->userEntryValidate($data)) {
-            $timeNow = Carbon::now();
-            try {
-                $lastRecord = UserEntry::where('id_slot', $data['slot'])
-                    ->orderBy('check_in_at', 'DESC')
-                    ->first();
-                $lastRecord->check_out_at = $timeNow;
-                $lastRecord->save();
-            } catch (Throwable $e) {
-                return response()->json(['error' => true], 500);
-            }
-
-            Slot::where('id', $data['slot'])
-                ->update(['is_occupied' => false]);
-            return response()->json(['error' => false], 200); 
-        } else {
-            return response()->json(['error' => true], 400); 
+        $timeNow = Carbon::now();
+        try {
+            $lastRecord = UserEntry::where('id_slot', $request->id_slot)
+                ->orderBy('check_in_at', 'DESC')
+                ->first();
+            $lastRecord->check_out_at = $timeNow;
+            $lastRecord->save();
+        } catch (Throwable $e) {
+            return response()->json(['error' => true], 500);
         }
-    }
 
-    public function userEntryValidate($data) {
-        if (isset($data['slot'])) {
-            return true;
-        }  
+        Slot::where('id', $request->id_slot)
+            ->update(['is_occupied' => false]);
+        return response()->json(['error' => false], 200); 
     }
-
+    
     public function turnOnLight(Request $request) {
         try {
             LightMonitoring::where('id', 1)
