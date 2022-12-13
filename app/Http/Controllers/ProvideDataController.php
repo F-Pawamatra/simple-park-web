@@ -16,9 +16,31 @@ class ProvideDataController extends Controller
             ->get(['id'])
             ->first();
 
+        if ($selectedSlot == null) {
+            return response()->json([
+                'selected_slot' => 0,
+            ], 200);
+        }
+
         return response()->json([
             'selected_slot' => $selectedSlot->id,
         ], 200);
+    }
+
+    public function getSlotStatus(Request $request) {
+        $selectedSlot = Slot::where('id', $request->id_slot)
+            ->get(['is_occupied'])
+            ->first();
+
+        if ($selectedSlot != null) {
+            return response()->json([
+                'is_occupied' => $selectedSlot->is_occupied
+            ], 200);
+        } else {
+            return response()->json([
+                'error' => true
+            ], 500);
+        }
     }
 
     public function userCheckIn(Request $request) {

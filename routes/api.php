@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/available-slot', [ProvideDataController::class, 'getSlot']);
+Route::get('/check-slot/{id_slot}', [ProvideDataController::class, 'getSlotStatus']);
 Route::post('/check-in/{id_slot}', [ProvideDataController::class, 'userCheckIn']);
 Route::post('/check-out/{id_slot}', [ProvideDataController::class, 'userCheckOut']);
 Route::post('/turn-on/{id_light}', [ProvideDataController::class, 'turnOnLight']);
