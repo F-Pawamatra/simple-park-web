@@ -28,14 +28,15 @@ class ProvideDataController extends Controller
     }
 
     public function getSlotStatus(Request $request) {
-        $selectedSlot = Slot::where('id', $request->id_slot)
-            ->get(['is_occupied'])
-            ->first();
+        $result = array();
+        $slots = Slot::get(['id', 'is_occupied']);
 
-        if ($selectedSlot != null) {
-            return response()->json([
-                'is_occupied' => $selectedSlot->is_occupied
-            ], 200);
+        foreach($slots as $s) {
+            $result[$s->id] = $s->is_occupied;
+        }
+
+        if ($result != null) {
+            return response()->json($result, 200);
         } else {
             return response()->json([
                 'error' => true
